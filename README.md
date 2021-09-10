@@ -10,28 +10,31 @@
 ## Firebase CLI 설치
 
 ```bash
-npm install -g frirebase-tools
+$ npm install -g frirebase-tools
 ```
 
 ## Firebase CLI 로그인 / 로그아웃
 
 ```bash
-frirebase login
-// 구글 인증
+// 로그인 + 구글 계정 인증
+$ frirebase login
+
 + success! Logged in as xxx@gmail.com
 ```
 ```bash
-frirebase logout
+// 로그아웃
+$ frirebase logout
 ```
 ## Firebase 프로젝트 확인
 
 ```bash
-frirebase projects:list
+$ firebase projects:list
 
 √ Preparing the list of your Firebase projects
 ```
 
 ## Firebase 프로젝트 초기화
+- 프로젝트에서 사용할 디렉토리 만들기
 ```bash
 $ mkdir chat-server
 $ cd chat-server
@@ -39,7 +42,7 @@ $ cd chat-server
 
 - 호스팅 설정
 ```bash
-frirebase init hosting
+$ frirebase init hosting
 
 ? Are you ready to proceed? Yes
 
@@ -55,9 +58,10 @@ frirebase init hosting
 
 +  Firebase initialization complete!
 ```
+
 - 펑션 설정
 ```bash
-firebase init functions
+$ firebase init functions
 
 ? Are you ready to proceed? Yes
 
@@ -69,9 +73,10 @@ firebase init functions
 
 + Firebase initialization complete!
 ```
-#### Firebase Database 설정
+
+- Firebase Database 설정
 ```bash
-firebase init database
+$ firebase init database
 
 ? Are you ready to proceed? Yes
 
@@ -84,8 +89,10 @@ firebase init database
 +  Firebase initialization complete!
 ```
 
-### Firebase Database 구축
+- Firebase Database 구축
 ```bash
+// database.rules.json 파일
+// false를 true로 설정
 {
   /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
@@ -94,40 +101,38 @@ firebase init database
   }
 }
 ```
-
-
-
-
-
-
-
-### 프로젝트 구축
+## 프로젝트 구축
 ```bash
-firebase serve --only functions
-
-- 참고 소스: https://raw.githubusercontent.com/okachijs/jsframeworkbook/master/2_5_server/functions/index.js
-
-- 소스 복사 후 functions\index.js 파일에 붙여 넣기
-```
-
-### 테스트하기
-```bash
-firebase serve --only functions
+$ firebase serve --only functions
 
 +  Firebase initialization complete!
-```
+
 > 가상 서버 주소: http://localhost:5000/chat-server-6a35e/us-central1/v1
+```
+> 참고 소스 링크: https://raw.githubusercontent.com/okachijs/jsframeworkbook/master/2_5_server/functions/index.js
+> 소스 복사 후 functions\index.js 파일에 붙여 넣기
 
-
-### API 테스트
+### RESTful API 테스트
 > GIT bash로 수행
 ```bash
+// 서버 띄우기
+$ firebase serve --only functions
+
++  functions[us-central1-v1]: http function initialized (http://localhost:5000/chat-server-6a35e/us-central1/v1).
+
+// 채널 생성 API
 $ curl -H 'Content-Type:application/json' -d '{"cname": "general"}' http://localhost:5000/chat-server-6a35e/us-central1/v1/channels
+
 {"result":"ok"}
 
+// 채널 목록 API
 $ curl http://localhost:5000/chat-server-6a35e/us-central1/v1/channels
+
 {"channels":["general"]}
 
-$ curl -H 'Content-Type:applicat/json' -d '{}' http://localhost:5000/chat-server-6a35e/us-central1/v1/reset
+// 데이터 베이스 초기화 API
+$ curl -H 'Content-Type:application/json' -d '{}' http://localhost:5000/chat-server-6a35e/us-central1/v1/reset
+
 {"result":"ok"}
 ```
+> RESTful API 테스트 프로그램: POSTMAN
